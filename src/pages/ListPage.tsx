@@ -16,7 +16,7 @@ import { EmojiCard } from '../components/EmojiCard';
 import { Backdrop, CircularProgress } from '@mui/material';
 
 export const ListPage: React.FC = () => {
-    const [emojiJson, { loading }] = useFetchText('/data/emoji.json');
+    const [emojiJson, { loading }] = useFetchText('./data/emoji.json');
     const emojiList: EmojiInfo[] = emojiJson ? JSON.parse(emojiJson) : [];
     const emojiGroups: EmojiInfo[][] = groupBy(emojiList, t => t.category);
     const { pushSnackbar } = useSnackbar();
