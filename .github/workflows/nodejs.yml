@@ -42,7 +42,6 @@ jobs:
   deploy:
     runs-on: ubuntu-22.04
     needs: build
-    if: github.ref == 'refs/heads/master'
     steps:
     - name: GitHub Pages action
       uses: peaceiris/actions-gh-pages@v3.7.3
