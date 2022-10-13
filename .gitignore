@@ -1,5 +1,7 @@
 node_modules/
 .devcontainer/
-dist/
+dist/*
 !dist/index.html
+!dist/*.png
+!dist/*.ico
 tmp/
