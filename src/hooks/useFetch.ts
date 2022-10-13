@@ -5,8 +5,8 @@ export interface FetchResult {
     error: boolean
 }
 
-export const useFetchText: (url: string) => [string | null, FetchResult] = (url: string) => {
-    const [data, setData] = React.useState<string | null>(null);
+export const useFetchText = <T = string>(url: string, mapfn?: (text: string) => T): [T | null, FetchResult] => {
+    const [data, setData] = React.useState<T | null>(null);
     const [error, setError] = React.useState<boolean>(false);
     const [loading, setLoading] = React.useState<boolean>(false);
 
@@ -15,8 +15,12 @@ export const useFetchText: (url: string) => [string | null, FetchResult] = (url:
         (async () => {
             const res = await fetch(url);
             if (Math.floor(res.status / 100) === 2) {
-                const _data = await res.text();
-                setData(_data);
+                const _data: string = await res.text();
+                if (mapfn) {
+                    setData(mapfn(_data));
+                } else {
+                    setData(_data as T);
+                }
             } else {
                 console.log('error');
                 setError(true);
