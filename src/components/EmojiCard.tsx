@@ -14,6 +14,7 @@ export interface EmojiCardProps {
 
 export const EmojiCard: React.FC<EmojiCardProps> = (props: EmojiCardProps) => {
     const [showBadge, setShowBadge] = React.useState<boolean>(false);
+    const [hovering, setHovering] = React.useState<boolean>(false);
 
     const handleCopy = (event: React.MouseEvent<HTMLElement, MouseEvent>) => {
         props.onClick(props.emojiInfo);
@@ -34,12 +35,15 @@ export const EmojiCard: React.FC<EmojiCardProps> = (props: EmojiCardProps) => {
             {props.emojiInfo.emoji}
         </div>;
 
-    return <div style={{ width: 70 }}>
-        {showBadge
-            ? <Badge badgeContent={<CheckIcon />} color='success'>
-                {content}
-            </Badge>
-            : <Tooltip
+    return <div style={{ width: 70 }}
+        onMouseEnter={() => setHovering(true)}
+        onMouseLeave={() => setHovering(false)}
+    >
+        {showBadge && <Badge badgeContent={<CheckIcon />} color='success'>
+            {content}
+        </Badge>}
+        {(!showBadge && hovering) &&
+            <Tooltip
                 title={<code style={{ fontSize: '1.5em' }}>{props.onGetCopyText(props.emojiInfo)}</code>}
                 arrow
                 PopperProps={{
@@ -56,5 +60,6 @@ export const EmojiCard: React.FC<EmojiCardProps> = (props: EmojiCardProps) => {
                 {content}
             </Tooltip>
         }
+        {(!showBadge && !hovering) && content}
     </div>;
 };

@@ -15,6 +15,31 @@ import { useFetchText } from '../hooks/useFetch';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { EmojiCard } from '../components/EmojiCard';
 import { Backdrop, CircularProgress, TextField } from '@mui/material';
+import { Intersection } from '../components/Intersection';
+
+export interface EmojiListGroupProps {
+    onHandleCopy: (emojiInfo: EmojiInfo) => void
+    onGetCopyText: (emojiInfo: EmojiInfo) => string | null
+    group: EmojiInfo[]
+}
+
+export const EmojiListGroup: React.FC<EmojiListGroupProps> = (props: EmojiListGroupProps) => {
+    const groupName = props.group[0].category;
+    const groupNameSlug = convertSlug(groupName);
+    return <div key={groupName}>
+        <a href={'#' + groupNameSlug} style={{ textDecoration: 'none', color: 'unset' }}><h1 id={groupNameSlug}>{groupName}</h1></a>
+        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+            {props.group.map(e =>
+                <EmojiCard
+                    key={e.emoji}
+                    emojiInfo={e}
+                    onClick={props.onHandleCopy}
+                    onGetCopyText={props.onGetCopyText}
+                />
+            )}
+        </div>
+    </div>;
+};
 
 export interface EmojiListProps {
     onHandleCopy: (emojiInfo: EmojiInfo) => void
@@ -26,21 +51,13 @@ export const EmojiList: React.FC<EmojiListProps> = (props: EmojiListProps) => {
     const emojiGroups: EmojiInfo[][] = groupBy(props.emojiList, t => t.category);
     return <div>
         {emojiGroups.map(group => {
-            const groupName = group[0].category;
-            const groupNameSlug = convertSlug(groupName);
-            return <div key={groupName}>
-                <a href={'#' + groupNameSlug} style={{ textDecoration: 'none', color: 'unset' }}><h1 id={groupNameSlug}>{groupName}</h1></a>
-                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                    {group.map(e =>
-                        <EmojiCard
-                            key={e.emoji}
-                            emojiInfo={e}
-                            onClick={props.onHandleCopy}
-                            onGetCopyText={props.onGetCopyText}
-                        />
-                    )}
-                </div>
-            </div>;
+            return <Intersection height={500} key={group[0].category}>
+                <EmojiListGroup
+                    onHandleCopy={props.onHandleCopy}
+                    onGetCopyText={props.onGetCopyText}
+                    group={group}
+                />
+            </Intersection>;
         })}
     </div>;
 };
@@ -95,7 +112,7 @@ export const ListPage: React.FC = () => {
                         <TextField
                             color={'info'}
                             // fullWidth
-                            label={<><SearchIcon fontSize='small'/>Search</>}
+                            label={<><SearchIcon fontSize='small' />Search</>}
                             variant="outlined"
                             value={query}
                             onChange={(event: React.ChangeEvent<HTMLInputElement>) => setQuery(event.target.value)}
