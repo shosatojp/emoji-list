@@ -19,7 +19,7 @@ export const useFetchText = <T = string>(url: string, mapfn?: (text: string) => 
                 if (mapfn) {
                     setData(mapfn(_data));
                 } else {
-                    setData(_data as T);
+                    setData(_data as unknown as T);
                 }
             } else {
                 console.log('error');
