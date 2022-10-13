@@ -10,7 +10,7 @@ export const useFetchText: (url: string) => [string | null, FetchResult] = (url:
     const [error, setError] = React.useState<boolean>(false);
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    if (!data && !loading) {
+    if (!data && !loading && !error) {
         setLoading(true);
         (async () => {
             const res = await fetch(url);

@@ -9,14 +9,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { CopyType, EmojiInfo } from '../types';
-import { groupBy } from '../utils';
+import { convertSlug, groupBy } from '../utils';
 import { useFetchText } from '../hooks/useFetch';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { EmojiCard } from '../components/EmojiCard';
 import { Backdrop, CircularProgress } from '@mui/material';
 
 export const ListPage: React.FC = () => {
-    const [emojiJson, { loading }] = useFetchText('/data/emoji.json');
+    const [emojiJson, { loading }] = useFetchText('./data/emoji.json');
     const emojiList: EmojiInfo[] = emojiJson ? JSON.parse(emojiJson) : [];
     const emojiGroups: EmojiInfo[][] = groupBy(emojiList, t => t.category);
     const { pushSnackbar } = useSnackbar();
@@ -43,10 +43,6 @@ export const ListPage: React.FC = () => {
         } else {
             console.error('failed to get copy text');
         }
-    };
-
-    const convertSlug = (src: string) => {
-        return src.toLowerCase().replace(/[:\-&] ?/g, '').replace(/ +/g, '-');
     };
 
     const convertLaTeXEmojiFullname = (emojiInfo: EmojiInfo) => {
