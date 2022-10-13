@@ -18,3 +18,11 @@ export function groupBy<T, K>(array: T[], keyFn: (t: T) => K): T[][] {
 
     return groups;
 }
+
+export const convertSlug = (src: string) => {
+    return src.toLowerCase()
+        .replace(/(,|\.|:|\(|\)|’|“|”|&)/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/#/g, 'hash')
+        .replace(/\*/g, 'asterisk');
+};

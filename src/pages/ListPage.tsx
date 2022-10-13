@@ -9,7 +9,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 import { CopyType, EmojiInfo } from '../types';
-import { groupBy } from '../utils';
+import { convertSlug, groupBy } from '../utils';
 import { useFetchText } from '../hooks/useFetch';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { EmojiCard } from '../components/EmojiCard';
@@ -43,10 +43,6 @@ export const ListPage: React.FC = () => {
         } else {
             console.error('failed to get copy text');
         }
-    };
-
-    const convertSlug = (src: string) => {
-        return src.toLowerCase().replace(/[:\-&] ?/g, '').replace(/ +/g, '-');
     };
 
     const convertLaTeXEmojiFullname = (emojiInfo: EmojiInfo) => {
