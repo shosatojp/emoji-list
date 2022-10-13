@@ -40,7 +40,7 @@ export const EmojiCard: React.FC<EmojiCardProps> = (props: EmojiCardProps) => {
                 {content}
             </Badge>
             : <Tooltip
-                title={props.onGetCopyText(props.emojiInfo)}
+                title={<code style={{ fontSize: '1.5em' }}>{props.onGetCopyText(props.emojiInfo)}</code>}
                 arrow
                 PopperProps={{
                     modifiers: [
