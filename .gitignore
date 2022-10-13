@@ -4,4 +4,5 @@ dist/*
 !dist/index.html
 !dist/*.png
 !dist/*.ico
+!dist/site.webmanifest
 tmp/
